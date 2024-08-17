@@ -1,11 +1,16 @@
 package internal
 
 import (
+	"os"
+	"path"
 	"strconv"
 	"strings"
 
 	rl "github.com/gen2brain/raylib-go/raylib"
+	"github.com/z7ealth/gron.git/src/consts"
 )
+
+// Colors
 
 func handleColorParseErr(err error) {
 	if err != nil {
@@ -26,4 +31,29 @@ func GetColor(color string) rl.Color {
 	handleColorParseErr(err)
 
 	return rl.NewColor(uint8(r), uint8(g), uint8(b), uint8(a))
+}
+
+// Positions
+
+func GetRandomPos() rl.Vector2 {
+	x := float32(rl.GetRandomValue(0, consts.CELL_COUNT-1))
+	y := float32(rl.GetRandomValue(0, consts.CELL_COUNT-1))
+	return rl.NewVector2(x, y)
+}
+
+// Textures
+
+func LoadTexture(imageName string) rl.Texture2D {
+  cwd, err := os.Getwd()
+  if err != nil {
+    panic("Unable to get texture path")
+  }
+
+
+  fileName := path.Join(cwd, "assets/graphics/objects", imageName)
+
+  image := rl.LoadImage(fileName)
+  defer rl.UnloadImage(image)
+  
+  return rl.LoadTextureFromImage(image)
 }
