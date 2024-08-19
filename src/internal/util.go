@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/gammazero/deque"
 	rl "github.com/gen2brain/raylib-go/raylib"
 	"github.com/z7ealth/gron.git/src/consts"
 )
@@ -41,19 +42,33 @@ func GetRandomPos() rl.Vector2 {
 	return rl.NewVector2(x, y)
 }
 
+func GetUniquePos(invalid *deque.Deque[rl.Vector2]) rl.Vector2 {
+	position := GetRandomPos()
+	var unique bool
+	for !unique {
+		unique = true
+		for i := 0; i < invalid.Len(); i++ {
+			if rl.Vector2Equals(invalid.At(i), position) {
+				position = GetRandomPos()
+				unique = false
+			}
+		}
+	}
+	return position
+}
+
 // Textures
 
 func LoadTexture(imageName string) rl.Texture2D {
-  cwd, err := os.Getwd()
-  if err != nil {
-    panic("Unable to get texture path")
-  }
+	cwd, err := os.Getwd()
+	if err != nil {
+		panic("Unable to get texture path")
+	}
 
+	fileName := path.Join(cwd, "assets/graphics/objects", imageName)
 
-  fileName := path.Join(cwd, "assets/graphics/objects", imageName)
+	image := rl.LoadImage(fileName)
+	defer rl.UnloadImage(image)
 
-  image := rl.LoadImage(fileName)
-  defer rl.UnloadImage(image)
-  
-  return rl.LoadTextureFromImage(image)
+	return rl.LoadTextureFromImage(image)
 }

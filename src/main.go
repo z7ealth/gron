@@ -9,23 +9,33 @@ import (
 )
 
 func main() {
-  rl.InitWindow(consts.CELL_SIZE * consts.CELL_COUNT, consts.CELL_SIZE * consts.CELL_COUNT, "GRON")
+	rl.InitWindow(consts.CELL_SIZE*consts.CELL_COUNT, consts.CELL_SIZE*consts.CELL_COUNT, "GRON")
 	defer rl.CloseWindow()
 
 	rl.SetTargetFPS(60)
 
-  game := internal.NewGame()
-  defer game.Clean()
+	game := internal.NewGame()
+	defer game.Clean()
 
 	for !rl.WindowShouldClose() {
+
+		if game.Motorcycle.ShouldUpdate() {
+			game.Update()
+		}
+
+		game.UpdateMotorcycleDirection()
+
 		rl.BeginDrawing()
 
 		rl.ClearBackground(internal.GetColor(consts.BACKGROUND_COLOR))
 
-    game.Draw()
+		game.Draw()
 
-    fps := fmt.Sprintf("FPS: %v", rl.GetFPS())
-		rl.DrawText(fps, (consts.CELL_SIZE * consts.CELL_COUNT) - 60, 12, 12, rl.White)
+		score := fmt.Sprintf("Score: %v", game.Score)
+		rl.DrawText(score, 12, 12, 12, rl.White)
+
+		fps := fmt.Sprintf("FPS: %v", rl.GetFPS())
+		rl.DrawText(fps, (consts.CELL_SIZE*consts.CELL_COUNT)-60, 12, 12, rl.White)
 
 		rl.EndDrawing()
 	}
