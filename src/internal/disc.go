@@ -13,7 +13,7 @@ type Disc struct {
 func NewDisc() Disc {
 	return Disc{
 		Position: GetRandomPos(),
-		texture:  LoadTexture("food.png"),
+		texture:  LoadTexture("disc.png"),
 	}
 }
 

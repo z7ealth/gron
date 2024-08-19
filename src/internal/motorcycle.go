@@ -45,33 +45,20 @@ func (m *Motorcycle) Update() {
 	}
 }
 
-func (m *Motorcycle) ShouldUpdate() bool {
-	currentTime := time.Now()
-	elapsed := currentTime.Sub(m.lastUpdate).Milliseconds()
-	interval := consts.MOTORCYCLE_MOVEMENT_INTERVAL * time.Millisecond
-
-	if elapsed >= interval.Milliseconds() {
-		m.lastUpdate = currentTime
-		return true
-	}
-
-	return false
-}
-
 func (m *Motorcycle) Draw() {
 	var rectangle rl.Rectangle
 	for i := 0; i < m.Body.Len(); i++ {
 		if i == 0 {
 			rectangle = rl.NewRectangle(m.Body.At(0).X*consts.CELL_SIZE, m.Body.At(0).Y*consts.CELL_SIZE, consts.CELL_SIZE, consts.CELL_SIZE)
-			rl.DrawRectangleRounded(rectangle, 0.6, 6, rl.Orange)
+			rl.DrawRectangleRounded(rectangle, 0.6, 6, rl.SkyBlue)
 			continue
 		}
 		rectangle = rl.NewRectangle(m.Body.At(i).X*consts.CELL_SIZE, m.Body.At(i).Y*consts.CELL_SIZE, consts.CELL_SIZE, consts.CELL_SIZE)
-		rl.DrawRectangleRounded(rectangle, 0.6, 6, rl.White)
+		rl.DrawRectangleRounded(rectangle, 0.6, 6, rl.DarkGray)
 	}
 }
 
 func (m *Motorcycle) Reset() {
-  m.Direction = getInitialDirection()
-  m.Body = getInitialPos()
+	m.Direction = getInitialDirection()
+	m.Body = getInitialPos()
 }

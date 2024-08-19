@@ -72,3 +72,22 @@ func LoadTexture(imageName string) rl.Texture2D {
 
 	return rl.LoadTextureFromImage(image)
 }
+
+// Sounds
+
+func LoadSound(soundName string) rl.Sound {
+	cwd, err := os.Getwd()
+	if err != nil {
+		panic("Unable to get texture path")
+	}
+
+	fileName := path.Join(cwd, "assets/audio", soundName)
+
+	return rl.LoadSound(fileName)
+}
+
+func StopSoundIfPlaying(sound rl.Sound) {
+	if rl.IsSoundPlaying(sound) {
+		rl.StopSound(sound)
+	}
+}
